@@ -2,7 +2,7 @@
    navigation.js — роутинг страниц, глобальный поиск, модалки
    ============================================================ */
 const Nav = (() => {
-  const PAGE_IDS = ['dashboard','cards','review','topics','topic','textbook','chapter','dates','persons','events','commission','pomodoro','progress'];
+  const PAGE_IDS = ['dashboard','cards','review','topics','topic','textbook','chapter','dates','persons','events','commission','commanders','progress'];
   let current = 'dashboard';
 
   /* ---------------- модалки ---------------- */
@@ -63,7 +63,7 @@ const Nav = (() => {
       case 'persons': App.renderPersons(); break;
       case 'events': App.renderEvents(); break;
       case 'commission': if (!Commission.session) Commission.renderSetup(); break;
-      case 'pomodoro': if (typeof Pomodoro !== 'undefined') Pomodoro.render(); break;
+      case 'commanders': App.renderCommanders(); break;
       case 'progress': App.renderProgress(); break;
       case 'cards':
         if (!Cards.session && !(typeof Quiz !== 'undefined' && Quiz.active)) Cards.renderIdle();
@@ -100,6 +100,13 @@ const Nav = (() => {
     if (events.length) groups.push({ label: 'СОБЫТИЯ', items: events.map(e => ({
       k: e.year, t: e.name, s: e.significance, go: () => App.openEvent(e.id)
     }))});
+
+    if (typeof COMMANDERS !== 'undefined') {
+      const cmds = COMMANDERS.filter(c => has(c.name) || has(c.short) || has(c.lead) || has(c.tag)).slice(0, 6);
+      if (cmds.length) groups.push({ label: 'ПОЛКОВОДЦЫ', items: cmds.map(c => ({
+        k: c.years, t: c.name, s: String(c.lead).replace(/\*\*/g, ''), go: () => App.openCommander(c.id)
+      }))});
+    }
 
     const topics = TOPICS.filter(t => has(t.name) || has(t.short) || has(t.desc)).slice(0, 4);
     if (topics.length) groups.push({ label: 'ТЕМЫ', items: topics.map(t => ({
@@ -204,7 +211,7 @@ const Nav = (() => {
   function openMore() {
     const items = [
       ['topics','◈ Темы'], ['textbook','📖 Подробная история'], ['dates','◉ Даты'], ['persons','♙ Персоны'],
-      ['events','⚔ События'], ['pomodoro','⏱ Помодоро'], ['progress','▥ Прогресс']
+      ['events','⚔ События'], ['commanders','♞ Полководцы'], ['progress','▥ Прогресс']
     ];
     openModal(`
       <div class="m-title" id="modalTitle">РАЗДЕЛЫ</div>

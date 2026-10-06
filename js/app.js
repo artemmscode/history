@@ -81,7 +81,6 @@ const App = (() => {
       <div class="ts-row"><span class="ts-ico">▣</span><b>${day.reviews}</b> карточек пройдено сегодня</div>
       <div class="ts-row"><span class="ts-ico" style="color:var(--accent2)">✕</span><b>${day.wrong}</b> ${plural(day.wrong, ['ошибка','ошибки','ошибок'])}</div>
       <div class="ts-row"><span class="ts-ico" style="color:var(--ok)">✓</span><b>${day.correct}</b> ${plural(day.correct, ['правильный','правильных','правильных'])}</div>
-      <div class="ts-row"><span class="ts-ico" style="color:var(--warn)">⏱</span><b>${Math.round((day.focus || 0) / 60)}</b> мин фокуса · <b>${day.pomodoros || 0}</b> ${plural(day.pomodoros || 0, ['помодоро','помодоро','помодоро'])}</div>
       <div class="ts-row"><span class="ts-ico" style="color:var(--warn)">◷</span><b>${o.due}</b> к повторению сейчас · <b>${o.fresh}</b> новых</div>
       <div class="ts-meta">
         <div><span>ТОЧНОСТЬ</span><b>${acc}%</b></div>
@@ -153,7 +152,7 @@ const App = (() => {
       <button class="quick-btn" data-go="persons"><span class="q-ico">♙</span><span class="q-t">ПЕРСОНЫ</span><span class="q-s">${stats.persons} деятелей</span></button>
       <button class="quick-btn" data-go="events"><span class="q-ico">⚔</span><span class="q-t">СОБЫТИЯ</span><span class="q-s">${stats.events} с причинами и ходом</span></button>
       <button class="quick-btn" data-go="commission"><span class="q-ico">🎤</span><span class="q-t">КОМИССИЯ</span><span class="q-s">${stats.comm} устных вопросов</span></button>
-      <button class="quick-btn" data-go="pomodoro"><span class="q-ico">⏱</span><span class="q-t">ТАЙМЕР</span><span class="q-s">Помодоро: фокус и отдых</span></button>
+      <button class="quick-btn" data-go="commanders"><span class="q-ico">♞</span><span class="q-t">ПОЛКОВОДЦЫ</span><span class="q-s">10 героев: что и кого победили</span></button>
       <button class="quick-btn" data-go="review"><span class="q-ico">◷</span><span class="q-t">ПОВТОРЕНИЕ</span><span class="q-s">${stats.due} ждут повторения</span></button>`;
     $('quickGrid').querySelectorAll('[data-go]').forEach(b => {
       b.onclick = () => Nav.go(b.dataset.go);
@@ -741,6 +740,51 @@ const App = (() => {
   }
 
   /* ================================================================
+     ПОЛКОВОДЦЫ
+     ================================================================ */
+  const mdBold = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+
+  function renderCommanders() {
+    const box = $('commandersList');
+    if (!box || typeof COMMANDERS === 'undefined') return;
+    box.innerHTML = COMMANDERS.map((c, i) => `
+      <button class="cm-card" data-id="${c.id}">
+        <div class="cm-top">
+          <span class="cm-num">${String(i + 1).padStart(2, '0')}</span>
+          <span class="cm-years">${esc(c.years)}</span>
+        </div>
+        <div class="cm-name">${esc(c.short)}</div>
+        <div class="cm-tag">${esc(c.tag)}</div>
+        <div class="cm-lead">${mdBold(c.lead)}</div>
+        <div class="cm-wins">${c.wins.map(w => `<span class="cm-win"><i>${esc(w.y)}</i>${esc(w.n)}</span>`).join('')}</div>
+        <div class="cm-foot">ПОДРОБНЕЕ <span aria-hidden="true">→</span></div>
+      </button>`).join('');
+    box.querySelectorAll('[data-id]').forEach(b => {
+      b.onclick = () => openCommander(b.dataset.id);
+    });
+  }
+
+  function openCommander(id) {
+    if (typeof COMMANDERS === 'undefined') return;
+    const c = COMMANDERS.find(x => x.id === id);
+    if (!c) return;
+    Nav.openModal(`
+      <div class="m-title" id="modalTitle">${esc(c.name)}</div>
+      <div class="m-sub">${esc(c.years)} · ${esc(c.tag)}</div>
+      <div class="m-section"><h4>ГЛАВНОЕ</h4><p>${mdBold(c.lead)}</p></div>
+      <div class="m-section"><h4>ГЛАВНЫЕ ПОБЕДЫ</h4>
+        <div class="cm-modal-wins">${c.wins.map(w => `
+          <div class="cm-mwin"><span class="cm-mwin-y">${esc(w.y)}</span>
+            <div><b>${esc(w.n)}</b><p>${esc(w.d)}</p></div></div>`).join('')}</div></div>
+      ${c.facts && c.facts.length ? `<div class="m-section"><h4>ЕЩЁ ФАКТЫ</h4>
+        <ul class="m-list">${c.facts.map(f => `<li>${mdBold(f)}</li>`).join('')}</ul></div>` : ''}
+      <div class="m-actions">
+        <button class="btn btn-ghost" data-act="close">ЗАКРЫТЬ</button>
+      </div>`);
+    document.querySelector('#modalBox [data-act="close"]').onclick = Nav.closeModal;
+  }
+
+  /* ================================================================
      ВОПРОС (из поиска)
      ================================================================ */
   function openQuestion(type, q, answer, must, ref) {
@@ -901,7 +945,6 @@ const App = (() => {
     Store.load();
     Progress.ensureDay();
     Cards.build();
-    if (typeof Pomodoro !== 'undefined') Pomodoro.init();
     Nav.init();
 
     $('ctaContinue').onclick = continuePreparation;
@@ -944,7 +987,7 @@ const App = (() => {
     get currentChapter() { return currentChapter; },
     renderDashboard, renderReview, renderTopics, renderTopic, openTopic,
     renderTextbook, renderChapter, openChapter,
-    renderDates, renderPersons, renderEvents, renderProgress,
-    openPerson, openEvent, openQuestion, openSettings, refreshChrome, init
+    renderDates, renderPersons, renderEvents, renderProgress, renderCommanders,
+    openPerson, openEvent, openQuestion, openSettings, openCommander, refreshChrome, init
   };
 })();

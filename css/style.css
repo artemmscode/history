@@ -429,6 +429,33 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .person-card .pc-role{font-size:13.5px;color:var(--muted);margin-top:9px;line-height:1.5}
 .person-card .pc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:13px;gap:8px}
 
+/* ---------- commanders ---------- */
+.cm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:20px}
+.cm-card{
+  text-align:left;padding:20px;border-radius:var(--r);background:var(--card);
+  border:1px solid var(--line);transition:.16s;display:flex;flex-direction:column;gap:10px;
+}
+.cm-card:hover{border-color:rgba(216,90,90,.5);transform:translateY(-3px)}
+.cm-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cm-num{font-family:var(--serif);font-size:13px;color:var(--accent);letter-spacing:.18em}
+.cm-years{font-family:var(--serif);font-size:13px;color:var(--accent2);letter-spacing:.06em}
+.cm-name{font-family:var(--serif);font-size:23px;letter-spacing:.05em;color:var(--text);line-height:1.15}
+.cm-tag{display:inline-block;align-self:flex-start;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent2);border:1px solid rgba(199,154,74,.4);border-radius:999px;padding:4px 10px}
+.cm-lead{font-size:13.5px;color:var(--muted);line-height:1.55}
+.cm-lead b{color:var(--text)}
+.cm-wins{display:flex;flex-direction:column;gap:6px}
+.cm-win{display:flex;gap:9px;align-items:baseline;font-size:13px;color:#dcd9d2;
+  background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:9px;padding:8px 11px}
+.cm-win i{font-style:normal;font-family:var(--serif);font-size:12.5px;color:var(--accent2);white-space:nowrap}
+.cm-foot{margin-top:auto;padding-top:6px;font-size:11px;letter-spacing:.2em;color:var(--accent);font-weight:700}
+.cm-modal-wins{display:flex;flex-direction:column;gap:10px}
+.cm-mwin{display:flex;gap:13px;align-items:flex-start;background:rgba(0,0,0,.25);
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.cm-mwin-y{font-family:var(--serif);font-size:13.5px;color:var(--accent2);white-space:nowrap;min-width:76px}
+.cm-mwin b{font-family:var(--serif);letter-spacing:.04em;font-size:15.5px}
+.cm-mwin p{margin-top:5px;font-size:13.5px;color:var(--muted);line-height:1.55}
+
 /* ---------- events ---------- */
 .events-list{display:flex;flex-direction:column;gap:12px;margin-top:20px}
 .event-card{padding:20px 22px;border-radius:var(--r);background:var(--card);border:1px solid var(--line);transition:.16s}
