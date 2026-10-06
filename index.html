@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0D">
+<title>HISTORY // 06.10 — подготовка к комиссии</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<a class="skip-link" href="#pageWrap">К основному содержимому</a>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand" role="banner">
+      <div class="brand-name">HISTORY</div>
+      <div class="brand-sub">// 06.10</div>
+    </div>
+
+    <nav class="side-nav" id="sideNav" aria-label="Основная навигация">
+      <button class="nav-item is-active" data-page="dashboard"><span class="nav-ico" aria-hidden="true">⌂</span>Обзор</button>
+      <button class="nav-item" data-page="cards"><span class="nav-ico" aria-hidden="true">▣</span>Карточки</button>
+      <button class="nav-item" data-page="review"><span class="nav-ico" aria-hidden="true">◷</span>Повторение</button>
+      <button class="nav-item" data-page="topics"><span class="nav-ico" aria-hidden="true">◈</span>Темы</button>
+      <button class="nav-item" data-page="textbook"><span class="nav-ico" aria-hidden="true">📖</span>Подробная история</button>
+      <button class="nav-item" data-page="dates"><span class="nav-ico" aria-hidden="true">◉</span>Даты</button>
+      <button class="nav-item" data-page="persons"><span class="nav-ico" aria-hidden="true">♙</span>Персоны</button>
+      <button class="nav-item" data-page="events"><span class="nav-ico" aria-hidden="true">⚔</span>События</button>
+      <button class="nav-item" data-page="commission"><span class="nav-ico" aria-hidden="true">🎤</span>Комиссия</button>
+      <button class="nav-item" data-page="pomodoro"><span class="nav-ico" aria-hidden="true">⏱</span>Таймер</button>
+      <button class="nav-item" data-page="progress"><span class="nav-ico" aria-hidden="true">▥</span>Прогресс</button>
+    </nav>
+
+    <div class="side-foot">
+      <div class="side-foot-label">До комиссии</div>
+      <div class="side-foot-days" id="sideDays">—</div>
+      <div class="bar bar-sm" aria-hidden="true"><i id="sideBar" style="width:0%"></i></div>
+      <div class="side-foot-pct" id="sidePct">0% подготовлено</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div class="search-wrap">
+        <span class="search-ico" aria-hidden="true">⌕</span>
+        <input id="searchInput" class="search-input" type="search" autocomplete="off"
+               placeholder="Поиск: «Иван IV», «1242», «Куликовская»…"
+               aria-label="Глобальный поиск" aria-expanded="false" aria-controls="searchResults">
+        <div class="search-results" id="searchResults" role="listbox" hidden></div>
+      </div>
+      <button class="icon-btn" id="settingsBtn" aria-label="Настройки" title="Настройки">⚙</button>
+    </header>
+
+    <div class="page-wrap" id="pageWrap" tabindex="-1">
+
+      <!-- ============ DASHBOARD ============ -->
+      <section class="page is-active" id="page-dashboard" aria-label="Обзор">
+        <div class="dash-head">
+          <div>
+            <h1 class="page-title">HISTORY <span class="title-mark">// 06.10</span></h1>
+            <div class="countdown" id="dashCountdown">—</div>
+          </div>
+          <div class="prepared">
+            <div class="prepared-label">ПОДГОТОВЛЕНО</div>
+            <div class="prepared-val" id="dashPrepared">0%</div>
+          </div>
+        </div>
+        <div class="bar bar-lg" role="progressbar" aria-label="Общий прогресс подготовки" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="dashBarWrap">
+          <i id="dashBar" style="width:0%"></i>
+        </div>
+
+        <button class="cta" id="ctaContinue">
+          <span class="cta-glow" aria-hidden="true"></span>
+          <span class="cta-top">🔥 ПРОДОЛЖИТЬ ПОДГОТОВКУ</span>
+          <span class="cta-topic" id="ctaTopic">—</span>
+          <span class="cta-sub" id="ctaSub">—</span>
+          <span class="cta-btn">ПРОДОЛЖИТЬ →</span>
+        </button>
+
+        <div class="grid-2">
+          <div class="panel">
+            <h2 class="panel-title">СЕГОДНЯ</h2>
+            <div id="todayStats" class="today-stats"></div>
+          </div>
+          <div class="panel">
+            <h2 class="panel-title">DAILY MISSION</h2>
+            <div id="missionList" class="mission-list"></div>
+            <div class="bar bar-sm" role="progressbar" aria-label="Прогресс миссии" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="missionBarWrap">
+              <i id="missionBar" style="width:0%"></i>
+            </div>
+            <div class="mission-pct" id="missionPct">0%</div>
+          </div>
+        </div>
+
+        <div class="panel panel-red">
+          <div class="panel-head">
+            <h2 class="panel-title">🔴 RED ZONE</h2>
+            <button class="btn btn-red" id="redZoneBtn">УНИЧТОЖИТЬ RED ZONE</button>
+          </div>
+          <div id="redZoneList" class="red-list"></div>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">БЫСТРЫЙ ДОСТУП</h2>
+          <div class="quick-grid" id="quickGrid"></div>
+        </div>
+      </section>
+
+      <!-- ============ CARDS ============ -->
+      <section class="page" id="page-cards" aria-label="Карточки">
+        <div id="cardsIdle">
+          <h1 class="page-title">КАРТОЧКИ</h1>
+          <p class="page-sub">Сначала вопрос. Ответ — только когда ты попробуешь вспомнить.</p>
+          <div class="idle-actions" id="idleActions"></div>
+          <h2 class="panel-title mt">ТРЕНИРОВКА ПО ТЕМЕ</h2>
+          <div class="idle-topics" id="idleTopics"></div>
+        </div>
+        <div id="cardsStage" class="cards-stage" hidden></div>
+      </section>
+
+      <!-- ============ REVIEW ============ -->
+      <section class="page" id="page-review" aria-label="Повторение">
+        <h1 class="page-title">ПОВТОРЕНИЕ</h1>
+        <p class="page-sub">Интервальное повторение: слабое возвращается чаще.</p>
+        <div id="reviewRoot"></div>
+      </section>
+
+      <!-- ============ TOPICS ============ -->
+      <section class="page" id="page-topics" aria-label="Темы">
+        <h1 class="page-title">ТЕМЫ</h1>
+        <p class="page-sub">Курс первой сессии — от Древней Руси до Гражданской войны.</p>
+        <div id="topicsList" class="topics-list"></div>
+      </section>
+
+      <!-- ============ TOPIC DETAIL ============ -->
+      <section class="page" id="page-topic" aria-label="Тема">
+        <button class="btn btn-ghost" id="topicBack">← ВСЕ ТЕМЫ</button>
+        <div id="topicRoot"></div>
+      </section>
+
+      <!-- ============ TEXTBOOK (ПОДРОБНАЯ ИСТОРИЯ) ============ -->
+      <section class="page" id="page-textbook" aria-label="Подробная история">
+        <h1 class="page-title">ПОДРОБНАЯ ИСТОРИЯ</h1>
+        <p class="page-sub">Электронный учебник: девять тем курса от Древней Руси до Гражданской войны — связный рассказ сверху вниз.</p>
+        <div id="textbookList" class="topics-list"></div>
+      </section>
+
+      <!-- ============ TEXTBOOK CHAPTER ============ -->
+      <section class="page" id="page-chapter" aria-label="Тема учебника">
+        <button class="btn btn-ghost" id="chapterBack">← ВСЕ ТЕМЫ УЧЕБНИКА</button>
+        <div id="chapterRoot"></div>
+      </section>
+
+      <!-- ============ DATES ============ -->
+      <section class="page" id="page-dates" aria-label="Даты">
+        <h1 class="page-title">ДАТЫ</h1>
+        <div class="filters" id="dateFilters" role="tablist" aria-label="Фильтр дат">
+          <button class="chip is-active" data-filter="all">Все</button>
+          <button class="chip" data-filter="unknown"><span class="dot dot-r"></span>Не знаю</button>
+          <button class="chip" data-filter="partial"><span class="dot dot-y"></span>Плаваю</button>
+          <button class="chip" data-filter="know"><span class="dot dot-g"></span>Знаю</button>
+        </div>
+        <div id="datesList" class="dates-grid"></div>
+      </section>
+
+      <!-- ============ PERSONS ============ -->
+      <section class="page" id="page-persons" aria-label="Персоны">
+        <h1 class="page-title">ПЕРСОНЫ</h1>
+        <p class="page-sub">Кто, когда правил и что сделал.</p>
+        <div id="personsList" class="persons-grid"></div>
+      </section>
+
+      <!-- ============ EVENTS ============ -->
+      <section class="page" id="page-events" aria-label="События">
+        <h1 class="page-title">СОБЫТИЯ</h1>
+        <p class="page-sub">Причины → ход → результат → значение.</p>
+        <div id="eventsList" class="events-list"></div>
+      </section>
+
+      <!-- ============ COMMISSION ============ -->
+      <section class="page" id="page-commission" aria-label="Комиссия">
+        <div id="commissionRoot" class="commission-root"></div>
+      </section>
+
+      <!-- ============ POMODORO ============ -->
+      <section class="page" id="page-pomodoro" aria-label="Таймер Помодоро">
+        <h1 class="page-title">ПОМОДОРО</h1>
+        <p class="page-sub">Работа — отдых — повтори. Настрой ритм под себя, таймер сохранится даже после перезагрузки.</p>
+        <div id="pomodoroRoot"></div>
+      </section>
+
+      <!-- ============ PROGRESS ============ -->
+      <section class="page" id="page-progress" aria-label="Прогресс">
+        <h1 class="page-title">ПРОГРЕСС</h1>
+        <div id="progressRoot"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="bottom-nav" id="bottomNav" aria-label="Мобильная навигация">
+    <button class="bnav-item is-active" data-page="dashboard"><span class="bnav-ico">⌂</span>Обзор</button>
+    <button class="bnav-item" data-page="cards"><span class="bnav-ico">▣</span>Карточки</button>
+    <button class="bnav-item" data-page="review"><span class="bnav-ico">◷</span>Повтор</button>
+    <button class="bnav-item" data-page="commission"><span class="bnav-ico">🎤</span>Комиссия</button>
+    <button class="bnav-item" id="moreBtn"><span class="bnav-ico">☰</span>Ещё</button>
+  </nav>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></div>
+</div>
+
+<noscript><div class="noscript">Для работы HISTORY // 06.10 нужен включённый JavaScript.</div></noscript>
+
+<script src="js/storage.js"></script>
+<script src="js/data.js"></script>
+<script src="js/deep-1-dates.js"></script>
+<script src="js/deep-2-dates.js"></script>
+<script src="js/textbook-1.js"></script>
+<script src="js/textbook-2.js"></script>
+<script src="js/textbook-3.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/commission.js"></script>
+<script src="js/pomodoro.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
